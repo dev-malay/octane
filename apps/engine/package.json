@@ -1,0 +1,20 @@
+﻿{
+  "name": "engine",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "build": "bun build src/index.ts --outdir dist"
+  },
+  "dependencies": {
+    "js-sdsl": "^4.4.2",
+    "shared-types": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

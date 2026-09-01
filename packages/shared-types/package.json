@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "shared-types",
   "module": "index.ts",
   "type": "module",
@@ -13,5 +13,8 @@
     "express": "^5.2.1",
     "js-sdsl": "^4.4.2",
     "zod": "^4.5.4"
+  },
+  "exports": {
+    ".": "./src/index.ts"
   }
 }
