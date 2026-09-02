@@ -1,4 +1,4 @@
-﻿import { LinkList, OrderedMap } from "js-sdsl"
+import { LinkList, OrderedMap } from "js-sdsl"
 
 export type positionType = 'LONG' | 'SHORT'
 export type marketType = 'MARKET' | 'LIMIT'
@@ -106,3 +106,15 @@ export interface dbPollerPayload {
   method: "POST" | "PUT" | "DELETE",
   data: Order | CustomPosition | Fills | CustomBalance | CreateMarket
 }
+
+export {
+  userSchemaValidation,
+  CreateOrderSchema,
+  getOrderSchema,
+  getFillsSchema,
+  cancelOrdersSchema,
+  createMarketSchema,
+  addBalanceSchema
+} from "./zod/zod.validation"
+
+
