@@ -118,3 +118,5 @@ export {
 } from "./zod/zod.validation"
 
 
+
+export type { WsRequests, EngineCommands, EngineEvents, depthUpdates, tradeUpdates, positionUpdates, tickerUpdates, orderUpdates } from "./ws/ws.types"

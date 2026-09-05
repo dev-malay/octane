@@ -1,0 +1,26 @@
+﻿{
+    "name":  "ws",
+    "module":  "index.ts",
+    "type":  "module",
+    "private":  true,
+    "devDependencies":  {
+                            "@types/bun":  "latest"
+                        },
+    "scripts":  {
+                    "dev":  "bun --env-file=../../.env --watch src/index.ts",
+                    "build":  "bun build src/index.ts --outdir dist --target=bun",
+                    "test":  "echo Add test script here",
+                    "lint":  "echo Add lint script here"
+                },
+    "peerDependencies":  {
+                             "typescript":  "^5"
+                         },
+    "dependencies":  {
+                         "@prisma-db":  "workspace:*",
+                         "redis-client":  "workspace:*",
+                         "shared-types":  "workspace:*",
+                         "@types/ws":  "^8.18.1",
+                         "ws":  "^8.21.0",
+                         "redis":  "^5.12.1"
+                     }
+}
