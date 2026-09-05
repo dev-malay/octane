@@ -1,4 +1,5 @@
-﻿import { PrismaClient } from "./generated/prisma/client";
+export type { OrderStatus, OrderType, PositionType, PositionStatus } from "./generated/prisma/client";
+import { PrismaClient } from "./generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 function createPrismaClient() {
