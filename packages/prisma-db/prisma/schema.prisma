@@ -7,31 +7,120 @@ datasource db {
 }
 
 model User {
-    id          String      @id @default(cuid())
-    email       String      @unique
-    password    String
-    role        Role 
-    userBalance UserBalance?
+  id          String      @id @default(cuid())
+  email       String      @unique
+  password    String
+  role        Role
+  orders      Orders[]
+  fills       Fills[]
+  positions   Positions[]
+  userBalance UserBalance?
+}
+
+model Fills {
+  id           String   @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  orderId      String
+  order        Orders   @relation(fields: [orderId], references: [id])
+  marketId     String
+  makerId      String
+  market       Markets  @relation(fields: [marketId], references: [id])
+  takerId      String
+  price        Float
+  originalQty  Float
+  filledQty    Float
+  remainingQty Float
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  @@id([id, createdAt])
+}
+
+model Orders {
+  id           String      @id @default(cuid())
+  userId       String
+  user         User        @relation(fields: [userId], references: [id])
+  price        Float?
+  qty          Float
+  remainingQty Float       @default(0)
+  leverage     Int
+  margin       Float?
+  marketId     String
+  market       Markets     @relation(fields: [marketId], references: [id])
+  positionType PositionType
+  orderType    OrderType
+  fills        Fills[]
+  orderStatus  OrderStatus
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model Positions {
+  id                 String         @id @default(cuid())
+  userId             String
+  user               User           @relation(fields: [userId], references: [id])
+  marketId           String
+  market             Markets        @relation(fields: [marketId], references: [id])
+  positionType       PositionType
+  qty                Float
+  leverage           Int
+  margin             Float
+  maintainanceMargin Float
+  liquidationPrice   Float
+  realisedPnL        Float
+  entryPrice         Float
+  averagePrice       Float
+  unrealisedPnL      Float
+  openedAt           DateTime       @default(now())
+  closedAt           DateTime       @updatedAt
+  status             PositionStatus
 }
 
 model UserBalance {
-    id                  String      @id @default(cuid())
-    userId              String      @unique
-    user                User        @relation(fields: [userId], references: [id])
-    availableBalance    Float       @default(0)
-    lockedBalance       Float       @default(0)
-    createdAt           DateTime    @default(now())
-    updatedAt           DateTime    @updatedAt
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  user             User     @relation(fields: [userId], references: [id])
+  availableBalance Float    @default(0)
+  lockedBalance    Float    @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 model Markets {
-    id          String  @id @default(cuid())
-    symbol      String
-    market      String
-    maxLeverage Int
+  id          String @id @default(cuid())
+  symbol      String
+  market      String
+  maxLeverage Int
+  orders      Orders[]
+  positions   Positions[]
+  fills       Fills[]
 }
 
 enum Role {
   admin
   user
 }
+
+enum OrderType {
+  MARKET
+  LIMIT
+}
+
+enum PositionType {
+  LONG
+  SHORT
+}
+
+enum PositionStatus {
+  OPEN
+  CLOSE
+}
+
+enum OrderStatus {
+  OPEN
+  FILLED
+  PARTIALLY_FILLED
+  CANCEL
+  REJECTED
+}
+
