@@ -1,99 +1,221 @@
-﻿import type { Order } from "shared-types";
+import type { CreateMarket, Order, dbPollerEvents, marketType, orderStatus, positionType } from "shared-types";
+import type { orderUpdates, depthUpdates } from "shared-types/src/ws/ws.types";
 import type { MatchingEngine } from "./MatchingEngine";
-import type { UserManager } from "./UserManager";
-import type { RiskManager } from "./RiskManager";
 import type { RedisManager } from "./RedisManager";
+import type { RiskManager } from "./RiskManager";
+import type { UserManager } from "./UserManager";
 import type { OrderBook } from "./OrderBook";
+import { DBPoller } from "./DBPollerManager";
 
 export class EngineServer {
-  private dbPoller?: any;
+  private dbpoller?: DBPoller;
+
   constructor(
     private matchingEngine: MatchingEngine,
     private userManager: UserManager,
     private riskManager: RiskManager,
     private redisManager: RedisManager,
-    private orderBook: OrderBook,
+    private orderBook: OrderBook
   ) {}
-  setDBPoller(dbPoller: any) {
-    this.dbPoller = dbPoller;
+
+  setDBPoller(dbpoller: DBPoller) {
+    this.dbpoller = dbpoller;
   }
+  
 
-
-  async start() {
-    console.log("engine server started listening to send to engine");
-
-    while (true) {
-      const data = await this.redisManager.readFromBackendServer();
-      if (!data) continue;
-      for (const stream of data) {
-        for (const entry of stream.messages) {
-          const id = entry.id;
-          const fields = entry.message as any;
-          const raw = fields.data ?? fields["data"];
-          if (!raw) {
-            await this.redisManager.saveStreamId(id)
-            continue;
-          }
-          try {
-            const parsed = JSON.parse(raw);
-            //TODO 
-            // expected { type: "create-order", orderId, userId, marketId... }
-            if (parsed.type === "create-order" || parsed.marketType) {
+  async start(){
+     while (true) {
+      const message = await this.redisManager.readFromBackendServer();
+      if (message) {
+        for (let stream of message) {
+          for (let singleMessage of stream.messages) {
+            const msg = singleMessage.message;
+            if (msg.type === "create-order") {
+              const orderType = (msg.orderType ?? "LIMIT") as marketType;
               const order: Order = {
-                orderId: parsed.orderId,
-                userId: parsed.userId,
-                marketId: parsed.marketId,
-                marketType: parsed.marketType ?? "LIMIT",
-                orderType: parsed.orderType ?? parsed.marketType ?? "LIMIT",
-                positionType: parsed.positionType,
-                status: parsed.status ?? "OPEN",
-                price: parsed.price,
-                qty: parsed.qty,
-                leverage: parsed.leverage,
-                remainingQty: parsed.remainingQty ?? parsed.qty,
-              };
-              // lock the margin
-              const margin = this.riskManager.calculateMargin(order);
-              const user = this.userManager.getUser(order.userId);
-              if (user) {
-                if (margin > user.collateral.availabe) {
-                  order.status = "CANCEL" as any;
-                  continue;
-                }
-                this.userManager.lockBalance(user, margin);
-                this.userManager.addOrder(order.userId, order as any);
-              }
-              this.matchingEngine.matchOrder(order);
-            } else if (parsed.type === "cancel-order") {
-              const price = this.orderBook.findOrderPrice(
-                parsed.marketId,
-                parsed.orderId,
-              )
-
-              const orderToCancel: Order = {
-                orderId: parsed.orderId,
-                userId: parsed.userId,
-                marketId: parsed.marketId,
-                marketType: "LIMIT",
-                orderType: "LIMIT",
-                positionType: parsed.positionType,
-                status: "CANCEL",
-                price: parsed.price ?? price,
-                qty: parsed.qty ?? 0,
-                leverage: parsed.leverage ?? 1,
-                remainingQty: 0
+                orderId: msg.orderId ?? "",
+                userId: msg.userId ?? "",
+                marketId: msg.marketId ?? "",
+                marketType: orderType,
+                orderType: msg.orderType ?? "",
+                positionType: (msg.positionType ?? "LONG") as positionType,
+                status: (msg.status ?? "OPEN") as orderStatus,
+                price:
+                  orderType === "MARKET"
+                    ? undefined
+                    : msg.price != null && msg.price !== ""
+                      ? parseFloat(msg.price)
+                      : undefined,
+                qty: msg.qty ? parseFloat(msg.qty) : 0,
+                leverage: msg.leverage ? parseFloat(msg.leverage) : 1,
+                remainingQty: msg.remainingQty ? parseFloat(msg.remainingQty) : 0
               };
 
-              this.orderBook.cancelOrder(orderToCancel);
-              this.userManager.removeOrder(parsed.userId, parsed.orderId);
+              await this.createOrder(order);
             }
-          } catch (e) {
-            console.error("engine parse error", e);
+            else if(msg.type === "cancel-order") {
+              const order: Order = {
+                orderId: msg.orderId ?? "",
+                userId: msg.userId ?? "",
+                marketId: msg.marketId ?? "",
+                marketType: "LIMIT",
+                orderType: msg.orderType ?? "",
+                positionType: (msg.positionType ?? "LONG") as positionType,
+                status: "OPEN",
+                price: msg.price ? parseFloat(msg.price) : undefined,
+                qty: msg.qty ? parseFloat(msg.qty) : 0,
+                leverage: msg.leverage ? parseFloat(msg.leverage) : 1,
+                remainingQty: msg.remainingQty ? parseFloat(msg.remainingQty) : 0
+              };
+              await this.cancelOrder(order)
+            } else if(msg.type === "create-market"){
+              const createMarket: CreateMarket = {
+                marketName: msg.marketName ?? "",
+                marketId: msg.marketId ?? "",
+                maxLeverage: msg.maxLeverage ?? "10",
+                symbol: msg.symbol ?? "",
+              };
+              this.createMarket(createMarket)
+            } else if (msg.type === "add-balance") {
+              await this.addBalance(msg.userId ?? "", parseFloat(msg.amount ?? "0"));
+            }
+            await this.redisManager.saveStreamId(singleMessage.id);
           }
-
-          await this.redisManager.saveStreamId(id);
         }
       }
     }
+  }
+
+  public async createOrder(data: Order) {
+    let user = this.userManager.getUser(data.userId)
+
+    if(!user){
+      await this.userManager.addUser(data.userId)
+      user = this.userManager.getUser(data.userId)
+    }
+
+    const margin = this.riskManager.calculateMargin(data);
+    const valid = this.riskManager.validate(data.userId, margin);
+
+    if(!user){throw new Error("user not found")}
+
+    if(!valid) {
+      console.log(`[EngineServer] insufficient margin for user ${data.userId}, order rejected`);
+      return;
+    }
+
+    this.userManager.lockBalance(user, margin)
+    this.userManager.addOrder(data.userId, data)
+    this.matchingEngine.matchOrder(data)
+
+    if (data.marketType === "MARKET" && data.remainingQty > 0) {
+      const unlockMargin = this.riskManager.calculateMarginForQty(data, data.remainingQty);
+      this.userManager.unlockBalance(user, unlockMargin);
+    }
+  }
+
+  public createLiquidationOrder(data: Order) {
+    this.matchingEngine.matchOrder(data)
+  }
+
+  public async cancelOrder(data: Order) {
+    let user = this.userManager.getUser(data.userId);
+    if (!user) {
+      await this.userManager.addUser(data.userId);
+      user = this.userManager.getUser(data.userId);
+    }
+    if (!user) return;
+
+    const existingOrder = user.orders.find((o) => o.orderId === data.orderId);
+    if (existingOrder) {
+      data.qty = existingOrder.qty ?? data.qty;
+      data.remainingQty =
+        existingOrder.remainingQty ?? data.remainingQty ?? data.qty;
+      data.price = existingOrder.price ?? data.price;
+      data.leverage = existingOrder.leverage ?? data.leverage;
+      data.positionType = existingOrder.positionType ?? data.positionType;
+    }
+
+    if (data.price == null || data.price <= 0) {
+      const bookPrice = this.orderBook.findOrderPrice(
+        data.marketId,
+        data.orderId,
+      );
+      if (bookPrice != null) {data.price = bookPrice}
+    }
+
+    if (!data.remainingQty || data.remainingQty <= 0) {
+      data.remainingQty = data.qty;
+    }
+
+    this.orderBook.cancelOrder(data);
+
+    const depth = this.orderBook.getDepth(data.marketId);
+    const depthEvent: depthUpdates = {
+      type: "depth",
+      market: data.marketId,
+      asks: depth.asks,
+      bids: depth.bids
+    };
+    const depthChannel = this.redisManager.createChannel("depth", data.marketId);
+    void this.redisManager.publishWithSnapshot(depthChannel, depthEvent);
+
+    const unlockMargin = this.riskManager.calculateMarginForQty(data, data.remainingQty, data.price);
+    this.userManager.unlockBalance(user, unlockMargin);
+    this.userManager.removeOrder(data.userId, data.orderId);
+
+    data.status = "CANCEL";
+
+    if (this.dbpoller && data.orderId) {
+      const cancelEvent: dbPollerEvents = {
+        type: "OrderUpdate",
+        payload: {
+          method: "PUT",
+          data: { ...data, status: "CANCEL" },
+        }
+      };
+
+      void this.dbpoller.sendToDBPoller(cancelEvent);
+    }
+
+    const orderUpdateEvent: orderUpdates = {
+      type: "orderUpdate",
+      orderId: data.orderId,
+      userId: data.userId,
+      marketId: data.marketId,
+      positionType: data.positionType,
+      price: data.price,
+      qty: data.qty,
+      remainingQty: 0,
+      leverage: data.leverage,
+      status: "CANCEL"
+    };
+    const orderChannel = this.redisManager.createChannel("order", data.marketId, data.userId);
+    void this.redisManager.publish(orderChannel, orderUpdateEvent );
+  }
+
+  public createMarket(data: CreateMarket) {
+    this.orderBook.addMarket(data.marketId);
+
+    if (this.dbpoller) {
+      const marketEvent: dbPollerEvents = {
+        type: "MarketCreated",
+        payload: { method: "POST", data },
+      };
+      void this.dbpoller.sendToDBPoller(marketEvent);
+    }
+  }
+
+  public async addBalance(userId: string, amount: number) {
+    if (!amount || amount <= 0) return;
+
+    let user = this.userManager.getUser(userId);
+    if (!user) {
+      await this.userManager.addUser(userId);
+      user = this.userManager.getUser(userId);
+    }
+    if (!user) return;
+
+    this.userManager.addBalance(user, amount);
   }
 }

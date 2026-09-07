@@ -1,20 +1,22 @@
 ﻿{
-  "name": "shared-types",
-  "module": "index.ts",
-  "type": "module",
-  "private": true,
-  "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
-  },
-  "dependencies": {
-    "express": "^5.2.1",
-    "js-sdsl": "^4.4.2",
-    "zod": "^4.5.4"
-  },
-  "exports": {
-    ".": "./src/index.ts"
-  }
+    "name":  "shared-types",
+    "module":  "index.ts",
+    "type":  "module",
+    "private":  true,
+    "devDependencies":  {
+                            "@types/bun":  "latest"
+                        },
+    "peerDependencies":  {
+                             "typescript":  "^5"
+                         },
+    "dependencies":  {
+                         "express":  "^5.2.1",
+                         "js-sdsl":  "^4.4.2",
+                         "zod":  "^4.5.4"
+                     },
+    "exports":  {
+                    ".":  "./src/index.ts",
+                    "./src/ws/ws.types":  "./src/ws/ws.types.ts",
+                    "./src/zod/zod.validation":  "./src/zod/zod.validation.ts"
+                }
 }

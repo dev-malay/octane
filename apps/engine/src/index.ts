@@ -1,4 +1,4 @@
-﻿import { EngineServer } from "./classes/EngineServer.js";
+import { EngineServer } from "./classes/EngineServer.js";
 import { OrderBook } from "./classes/OrderBook.js";
 import { UserManager } from "./classes/UserManager.js";
 import { RiskManager } from "./classes/RiskManager.js";
@@ -6,7 +6,7 @@ import { FillManager } from "./classes/FillManager.js";
 import { PositionManager } from "./classes/PositionManager.js";
 import { MatchingEngine } from "./classes/MatchingEngine.js";
 import { RedisManager } from "./classes/RedisManager.js";
-import { DBPoller } from "./classes/DBPollerManager.js";
+import { DBPoller } from "./classes/DBPollerManager.js";import { LiquidationManager } from "./classes/LiquidationManager.js";
 
 
 const users = new Map();
@@ -14,7 +14,7 @@ const userIds: string[] = [];
 const redisManager = new RedisManager();
 const orderBook = new OrderBook();
 const userManager = new UserManager(users, userIds);
-const riskManager = new RiskManager(orderBook);
+const riskManager = new RiskManager(userManager, orderBook);
 const fillManager = new FillManager();
 const positionManager = new PositionManager(
   userManager,
@@ -40,12 +40,12 @@ const engineServer = new EngineServer(
 );
 
 
-await redisManager.connect();
+await redisManager.connect();const liquidationManager = new LiquidationManager(userManager, engineServer, redisManager, orderBook, positionManager);
 const dbPoller = new DBPoller(redisManager.getPublisherClient());
 matchingEngine.setDBPoller(dbPoller);
 positionManager.setDBPoller(dbPoller);
 engineServer.setDBPoller(dbPoller);
 
-void engineServer.start().catch((error) => {
-  console.error("engine server stopped unexpecteldy", error);
+await liquidationManager.init();void engineServer.start().catch((error) => {
+  console.error("engine server stopped unexpectedly", error);
 });
