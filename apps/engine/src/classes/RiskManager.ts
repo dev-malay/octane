@@ -1,10 +1,11 @@
-﻿import type { Order } from "shared-types"
+import type { Order } from "shared-types"
 import type { positionType } from "shared-types"
+import type { UserManager } from "./UserManager"
 import type { OrderBook } from "./OrderBook"
 
 export class RiskManager{
     private maintainanceMarginPercent = 5
-    constructor(private orderBookManager:OrderBook){}
+    constructor(private userManager:UserManager, private orderBookManager:OrderBook){}
     calculateMargin(data:Order){
         let price = data.price;
         if (!price || data.marketType === "MARKET") {
@@ -16,6 +17,24 @@ export class RiskManager{
             if (!price) throw new Error("Price is required for margin calculation");
         }
         return (price * data.qty) / data.leverage
+    }
+    calculateMarginForQty(data: Order, qty: number, price?: number) {
+        let fillPrice = price ?? data.price;
+        if (!fillPrice || data.marketType === "MARKET") {
+            const book = this.orderBookManager.getBook(data.marketId);
+            if (book) {
+                fillPrice = this.orderBookManager.getBestPrice(data.positionType, book) ?? book.lastTradedPrice;
+            }
+        }
+        if (!fillPrice) return 0;
+        return (fillPrice * qty) / data.leverage;
+    }
+    validate(userId:string, margin:number): boolean {
+        const user = this.userManager.getUser(userId)
+        if(!user){
+            throw new Error("user not found for validation in riskManager")
+        }
+        return margin <= user.collateral.availabe
     }
     calculateMaintainanceMargin(margin:number){
         return (margin * this.maintainanceMarginPercent) / 100

@@ -15,7 +15,7 @@ function makeOrder(over: Partial<Order> & { orderId: string; userId: string; mar
 describe("engine pure", () => {
   let ob: OrderBook; let fm: FillManager; let um: UserManager; let rm: RiskManager; let pm: PositionManager; let rdm: RedisManager; let me: MatchingEngine;
   beforeEach(async () => {
-    ob = new OrderBook(); fm = new FillManager(); const users = new Map(); const ids: string[] = []; um = new UserManager(users, ids); await um.addUser("alice"); await um.addUser("bob"); rdm = new RedisManager(); rm = new RiskManager(ob); pm = new PositionManager(um, rdm, rm); me = new MatchingEngine(ob, fm, pm, rm, rdm, um);
+    ob = new OrderBook(); fm = new FillManager(); const users = new Map(); const ids: string[] = []; um = new UserManager(users, ids); await um.addUser("alice"); await um.addUser("bob"); rdm = new RedisManager(); rm = new RiskManager(um, ob); pm = new PositionManager(um, rdm, rm); me = new MatchingEngine(ob, fm, pm, rm, rdm, um);
   });
   it("limit buy no cross rests in book", () => {
     const o = makeOrder({ orderId: "1", userId: "alice", marketId: "BTCUSDT", positionType: "LONG", price: 90, qty: 5, remainingQty: 5 });
