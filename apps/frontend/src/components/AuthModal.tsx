@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { useTrading } from "../context/TradingContext";
 import {
   X,
   User,
   Lock,
   ArrowRight,
-  Sparkles,
   ArrowLeft,
 } from "lucide-react";
 import { DEMO_ACCOUNTS } from "../lib/demoAccounts";
@@ -204,7 +203,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
+                      placeholder="Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢"
                       className="wr-input w-full py-2.5 pl-10 pr-4 text-sm text-white placeholder:text-[var(--wr-text-dim)] focus:border-[var(--wr-green)] focus:outline-none"
                     />
                   </div>
