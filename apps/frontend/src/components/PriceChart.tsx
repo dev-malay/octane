@@ -110,7 +110,7 @@ export function PriceChart() {
 
     if (!candlesReady) {
       ctx.fillStyle = "#4a5360";
-      ctx.font = "12px Inter, sans-serif";
+      ctx.font = "12px JetBrains Mono, monospace";
       ctx.textAlign = "center";
       ctx.fillText("Loading candles…", width / 2, height / 2);
       return;
@@ -118,7 +118,7 @@ export function PriceChart() {
 
     if (candles.length === 0) {
       ctx.fillStyle = "#4a5360";
-      ctx.font = "12px Inter, sans-serif";
+      ctx.font = "12px JetBrains Mono, monospace";
       ctx.textAlign = "center";
       ctx.fillText("Waiting for trades…", width / 2, height / 2);
       return;
@@ -177,9 +177,9 @@ export function PriceChart() {
       const x = xOf(i);
       const up = c.c >= c.o;
       const isHovered = i === hoverIndex;
-      const color = up ? "#2dff88" : "#ff4560";
+      const color = up ? "#10b981" : "#e05260";
       ctx.strokeStyle = isHovered ? "#e8ecf1" : color;
-      ctx.fillStyle = isHovered ? (up ? "#5dffb0" : "#ff7a8e") : color;
+      ctx.fillStyle = isHovered ? (up ? "#34d399" : "#e58a96") : color;
 
       ctx.beginPath();
       ctx.moveTo(x, yOf(c.h));
@@ -214,7 +214,7 @@ export function PriceChart() {
       ctx.stroke();
       ctx.setLineDash([]);
 
-      ctx.fillStyle = "rgba(45, 255, 136, 0.95)";
+      ctx.fillStyle = "rgba(16, 185, 129, 0.95)";
       ctx.fillRect(plotW, hy - 8, PAD_RIGHT, 16);
       ctx.fillStyle = "#041208";
       ctx.font = "10px JetBrains Mono, monospace";
@@ -226,14 +226,14 @@ export function PriceChart() {
     } else {
       const last = candles[candles.length - 1];
       const lastY = yOf(last.c);
-      ctx.strokeStyle = "#2dff88";
+      ctx.strokeStyle = "#10b981";
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(0, lastY);
       ctx.lineTo(plotW, lastY);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = "#2dff88";
+      ctx.fillStyle = "#10b981";
       ctx.fillRect(plotW, lastY - 8, PAD_RIGHT, 16);
       ctx.fillStyle = "#041208";
       ctx.font = "10px JetBrains Mono, monospace";

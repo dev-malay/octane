@@ -1,12 +1,8 @@
 import {
-  Search,
   ChevronDown,
   Wallet,
   LogOut,
-  Bell,
-  HelpCircle,
-  Globe,
-  Activity,
+  FlaskConical,
 } from "lucide-react";
 import { useTrading } from "../context/TradingContext";
 
@@ -23,7 +19,7 @@ export function TopNav({ onOpenAuth, onOpenSimulator }: TopNavProps) {
   return (
     <header className="flex h-12 shrink-0 items-center justify-between border-b border-[var(--wr-border)] bg-[var(--wr-bg)] px-5">
       <div className="flex items-center gap-8">
-        <span className="text-[17px] font-bold tracking-tight text-white">
+        <span className="text-[16px] font-semibold  tracking-tight text-white">
           Octane
         </span>
         <nav className="hidden items-center gap-6 text-[13px] font-medium md:flex">
@@ -49,7 +45,7 @@ export function TopNav({ onOpenAuth, onOpenSimulator }: TopNavProps) {
           className="hidden items-center gap-1.5 rounded-xl border border-[var(--wr-green)]/25 bg-[var(--wr-green-glow)] px-3 py-1.5 text-[12px] font-semibold text-[var(--wr-green)] transition-colors hover:border-[var(--wr-green)]/50 sm:flex"
           title="Open market simulator"
         >
-          <Activity className="h-3.5 w-3.5" />
+          <FlaskConical className="h-3.5 w-3.5" />
           Simulate
         </button>
         <button
@@ -57,19 +53,7 @@ export function TopNav({ onOpenAuth, onOpenSimulator }: TopNavProps) {
           className="rounded-lg p-2 text-[var(--wr-green)] transition-colors hover:bg-[var(--wr-card-hover)] sm:hidden"
           title="Market simulator"
         >
-          <Activity className="h-4 w-4" />
-        </button>
-        <button className="rounded-lg p-2 text-[var(--wr-text-muted)] transition-colors hover:bg-[var(--wr-card-hover)] hover:text-white">
-          <Bell className="h-4 w-4" />
-        </button>
-        <button className="rounded-lg p-2 text-[var(--wr-text-muted)] transition-colors hover:bg-[var(--wr-card-hover)] hover:text-white">
-          <HelpCircle className="h-4 w-4" />
-        </button>
-        <button className="rounded-lg p-2 text-[var(--wr-text-muted)] transition-colors hover:bg-[var(--wr-card-hover)] hover:text-white">
-          <Globe className="h-4 w-4" />
-        </button>
-        <button className="rounded-lg p-2 text-[var(--wr-text-muted)] transition-colors hover:bg-[var(--wr-card-hover)] hover:text-white">
-          <Search className="h-4 w-4" />
+          <FlaskConical className="h-4 w-4" />
         </button>
 
         {isAuthenticated ? (

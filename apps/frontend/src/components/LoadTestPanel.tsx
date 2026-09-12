@@ -206,7 +206,7 @@ export function LoadTestPanel() {
               className={`rounded-lg border px-3 py-2 text-[13px] ${
                 result.ok
                   ? "border-[#16c784]/40 bg-[#0c1a13] text-[#16c784]"
-                  : "border-[#f6465d]/40 bg-[#1a0d10] text-[#f6465d]"
+                  : "border-[#d94f5c]/40 bg-[#1a0d10] text-[#d94f5c]"
               }`}
             >
               {result.ok

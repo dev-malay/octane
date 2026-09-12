@@ -74,7 +74,7 @@ function Layout() {
           </div>
         </div>
 
-        {/* Right: order book + form â€” full height from top */}
+        {/* Right: order book + form — full height from top */}
         <div className="flex h-full w-[620px] shrink-0 gap-3">
           <div className="min-h-0 w-[300px] shrink-0">
             <OrderBook />

@@ -2,6 +2,8 @@
 
 :root {
   color-scheme: dark;
+
+  /* WhiteRock palette */
   --wr-bg: #060708;
   --wr-bg-elevated: #0c0e12;
   --wr-card-from: #161920;
@@ -13,11 +15,11 @@
   --wr-text-secondary: #9aa3b2;
   --wr-text-muted: #6b7585;
   --wr-text-dim: #4a5360;
-  --wr-green: #2dff88;
+  --wr-green: #10b981;
   --wr-green-dim: #22c97a;
-  --wr-green-glow: rgba(45, 255, 136, 0.12);
-  --wr-red: #ff4560;
-  --wr-red-glow: rgba(255, 69, 96, 0.12);
+  --wr-green-glow: rgba(16, 185, 129, 0.12);
+  --wr-red: #e05260;
+  --wr-red-glow: rgba(224, 82, 96, 0.12);
   --wr-amber: #f5a623;
 }
 
@@ -31,9 +33,9 @@ body {
   margin: 0;
   background: var(--wr-bg);
   color: var(--wr-text-secondary);
+  font-weight: 200;
   font-family:
-    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    sans-serif;
+    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -42,6 +44,7 @@ body {
     monospace;
 }
 
+/* Card with subtle top-to-bottom gradient */
 .wr-card {
   background: linear-gradient(
     180deg,
@@ -62,8 +65,9 @@ body {
   border-radius: 10px;
 }
 
+/* Primary CTA with gradient */
 .wr-btn-primary {
-  background: linear-gradient(180deg, #45ff9a 0%, #2dff88 45%, #1ed975 100%);
+  background: linear-gradient(180deg, #34d399 0%, #10b981 45%, #0b8457 100%);
   color: #041208;
   font-weight: 700;
   border-radius: 10px;
@@ -77,7 +81,7 @@ body {
 }
 
 .wr-btn-danger {
-  background: linear-gradient(180deg, #ff6b7f 0%, #ff4560 45%, #e83850 100%);
+  background: linear-gradient(180deg, #e57a8a 0%, #e05260 45%, #c9404f 100%);
   color: #1a0508;
   font-weight: 700;
   border-radius: 10px;
@@ -86,11 +90,15 @@ body {
 .wr-btn-danger:hover:not(:disabled) {
   filter: brightness(1.06);
 }
+
+/* Active pill tab */
 .wr-pill-active {
   background: var(--wr-green-glow);
   color: var(--wr-green);
   border-radius: 8px;
 }
+
+/* Sliding segment control (Order Book / Market Trades) */
 .wr-segment {
   position: relative;
   display: grid;
@@ -110,8 +118,8 @@ body {
   width: calc(50% - 3px);
   border-radius: 8px;
   background: var(--wr-green);
-  border: 1px solid rgba(45, 255, 136, 0.25);
-  box-shadow: 0 0 12px rgba(45, 255, 136, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.08);
   transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
 }
@@ -137,6 +145,8 @@ body {
 .wr-segment-btn--active {
   color: var(--wr-bg-elevated);
 }
+
+/* Ticker bar — subtle vertical gradient */
 .wr-ticker {
   background: linear-gradient(
     180deg,
@@ -148,6 +158,7 @@ body {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
+/* Market header — gradient bar aligned with trading view */
 .wr-market-header {
   background: linear-gradient(
     180deg,
@@ -161,6 +172,8 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.05),
     0 2px 8px rgba(0, 0, 0, 0.25);
 }
+
+/* Form input — inset gradient like WhiteRock */
 .wr-input {
   background: linear-gradient(
     180deg,
@@ -177,15 +190,16 @@ body {
 }
 
 .wr-input:focus-within {
-  border-color: rgba(45, 255, 136, 0.35);
+  border-color: rgba(16, 185, 129, 0.35);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 0 0 1px rgba(45, 255, 136, 0.12),
-    0 0 12px rgba(45, 255, 136, 0.06);
+    0 0 0 1px rgba(16, 185, 129, 0.12),
+    0 0 12px rgba(16, 185, 129, 0.06);
 }
 
 .wr-input-select {
-  background: linear-gradient(
+  background-color: var(--wr-bg-elevated);
+  background-image: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.04) 0%,
     rgba(0, 0, 0, 0.35) 100%
@@ -193,6 +207,11 @@ body {
   border: 1px solid var(--wr-border);
   border-radius: 12px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  color-scheme: dark;
+}
+.wr-input-select option {
+  background-color: var(--wr-bg-elevated);
+  color: #e8ecf1;
 }
 .wr-nav-active {
   color: var(--wr-text);
@@ -208,6 +227,8 @@ body {
   background: var(--wr-green);
   border-radius: 1px;
 }
+
+/* Nav underline active */
 * {
   scrollbar-width: thin;
   scrollbar-color: #2a3038 transparent;
@@ -240,7 +261,7 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 50%;
   background: var(--wr-green);
   border: 2px solid #0a0c10;
-  box-shadow: 0 0 8px rgba(45, 255, 136, 0.4);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
   cursor: pointer;
 }
 input[type="range"]::-moz-range-thumb {
@@ -249,7 +270,7 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 50%;
   background: var(--wr-green);
   border: 2px solid #0a0c10;
-  box-shadow: 0 0 8px rgba(45, 255, 136, 0.4);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
   cursor: pointer;
 }
 
@@ -278,4 +299,15 @@ input[type="range"]::-moz-range-thumb {
 
 .wr-message-fade {
   animation: wr-message-fade 0.45s ease-out;
+}
+
+@keyframes wr-soft-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+.wr-soft-blink {
+  animation: wr-soft-blink 2.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wr-soft-blink { animation: none; }
 }

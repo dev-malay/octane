@@ -1,4 +1,4 @@
-import { useTrading } from "../context/TradingContext";
+﻿import { useTrading } from "../context/TradingContext";
 import { MARKETS } from "../lib/constants";
 import { formatPrice } from "../lib/format";
 
@@ -23,7 +23,7 @@ export function Ticker() {
         <span
           className={`h-1.5 w-1.5 rounded-full ${
             connected
-              ? "bg-[var(--wr-green)] shadow-[0_0_4px_var(--wr-green)]"
+              ? "bg-[var(--wr-green)] shadow-[0_0_4px_var(--wr-green)] wr-soft-blink"
               : "bg-[var(--wr-red)]"
           }`}
         />
@@ -63,7 +63,7 @@ export function Ticker() {
       </div>
 
       <div className="hidden shrink-0 border-l border-[var(--wr-border)] px-4 text-[10px] text-[var(--wr-text-dim)] sm:block">
-        © 2026 octane trade 
+        © 2026 octane  
       </div>
     </footer>
   );

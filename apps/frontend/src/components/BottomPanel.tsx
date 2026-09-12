@@ -18,13 +18,6 @@ const TABS: { id: Tab; label: string }[] = [
   { id: "fills", label: "Fill History" },
 ];
 
-const DECORATIVE = [
-  "Borrows",
-  "TWAP",
-  "Order History",
-  "Position History",
-  "Funding History",
-];
 
 export function BottomPanel({
   onOpenAuth,
@@ -67,14 +60,7 @@ export function BottomPanel({
             </button>
           );
         })}
-        {DECORATIVE.map((d) => (
-          <span
-            key={d}
-            className="cursor-not-allowed whitespace-nowrap px-3 py-2 text-[12px] font-medium text-[var(--wr-text-dim)]"
-          >
-            {d}
-          </span>
-        ))}
+        
       </div>
 
       <div className="flex-1 overflow-auto border-t border-[var(--wr-border-subtle)]">
