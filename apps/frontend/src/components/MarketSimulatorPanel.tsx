@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Activity, X, Play, Square } from "lucide-react";
+import { FlaskConical, X, Play, Square } from "lucide-react";
 import {
   DEFAULT_SIMULATOR_CONFIG,
   getMarketSimulator,
@@ -104,7 +104,7 @@ export function MarketSimulatorPanel({
       <div className="wr-card flex h-full w-full max-w-md flex-col border-l border-[var(--wr-border)] shadow-2xl">
         <div className="flex items-center justify-between border-b border-[var(--wr-border-subtle)] px-4 py-3">
           <div className="flex items-center gap-2">
-            <Activity
+            <FlaskConical
               className={`h-4 w-4 ${running ? "animate-pulse text-[var(--wr-green)]" : "text-[var(--wr-text-muted)]"}`}
             />
             <h2 className="text-[15px] font-bold text-white">

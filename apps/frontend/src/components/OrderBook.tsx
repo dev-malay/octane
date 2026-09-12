@@ -136,7 +136,7 @@ function BookPanel({
                 row={row}
                 maxTotal={asks.maxTotal}
                 color="var(--wr-red)"
-                barColor="rgba(255, 69, 96, 0.18)"
+                barColor="rgba(224, 82, 96, 0.18)"
                 market={market}
               />
             ))
@@ -173,7 +173,7 @@ function BookPanel({
                 row={row}
                 maxTotal={bids.maxTotal}
                 color="var(--wr-green)"
-                barColor="rgba(45, 255, 136, 0.18)"
+                barColor="rgba(16, 185, 129, 0.18)"
                 market={market}
               />
             ))

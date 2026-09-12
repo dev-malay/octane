@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTrading } from "../context/TradingContext";
 import {
   X,
@@ -203,7 +203,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢"
+                      placeholder="••••••••"
                       className="wr-input w-full py-2.5 pl-10 pr-4 text-sm text-white placeholder:text-[var(--wr-text-dim)] focus:border-[var(--wr-green)] focus:outline-none"
                     />
                   </div>
@@ -257,7 +257,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 disabled={loading}
                 className="flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--wr-green)]/20 bg-black/30 py-3 text-sm font-semibold text-[var(--wr-green)] transition-colors hover:bg-[var(--wr-card-hover)]"
               >
-                One Click Demo Account
+                One-Click Demo Account
               </button>
             </>
           )}
