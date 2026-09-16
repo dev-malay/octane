@@ -1,11 +1,11 @@
-﻿{
+{
   "name": "engine",
   "module": "index.ts",
   "type": "module",
   "private": true,
   "scripts": {
     "dev": "bun --watch src/index.ts",
-    "build": "bun build src/index.ts --outdir dist"
+    "build": "bun build src/index.ts --outdir dist --target bun"
   },
   "dependencies": {
     "js-sdsl": "^4.4.2",

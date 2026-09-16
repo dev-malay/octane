@@ -1,4 +1,4 @@
-﻿import express from "express";
+import express from "express";
 import orderRoutes from "./routes/orders.js";
 import authRoutes from "./routes/auth.js"
 import cors from "cors"
@@ -48,6 +48,6 @@ app.use("/api/v1/order", orderRoutes);
 
 const PORT = Number(process.env.PORT ?? 3000)
 
-app.listen(PORT, "0.0.0.0", ()=>{
+const server = app.listen(PORT, "0.0.0.0", ()=>{
     console.log(`backend server has started on port ${PORT}`)
 })
