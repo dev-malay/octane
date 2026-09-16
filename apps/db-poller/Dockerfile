@@ -3,18 +3,18 @@ FROM oven/bun:1.1 AS base
 WORKDIR /app
 
 COPY package.json bun.lock ./
+COPY apps/db-poller/package.json ./apps/db-poller/package.json
+COPY packages ./packages
 RUN bun install --frozen-lockfile
 
 COPY . .
 
-RUN bun run build
+RUN bun run --filter db-poller build
+RUN ls -la apps/db-poller/dist/ && test -f apps/db-poller/dist/index.js
 
 FROM oven/bun:1.1 AS runner
 WORKDIR /app
 ENV NODE_ENV=production
-COPY --from=base /app/node_modules ./node_modules
-COPY --from=base /app/dist ./dist
-COPY --from=base /app/package.json ./
-COPY --from=base /app/bun.lock ./
+COPY --from=base /app/apps/db-poller/dist ./dist
 
 CMD ["bun", "run", "dist/index.js"]

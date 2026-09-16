@@ -1,20 +1,20 @@
-# apps/engine/Dockerfile
 FROM oven/bun:1.1 AS base
 WORKDIR /app
 
 COPY package.json bun.lock ./
-COPY apps/engine/package.json ./apps/engine/package.json
+COPY apps/ws/package.json ./apps/ws/package.json
 COPY packages ./packages
 RUN bun install --frozen-lockfile
 
 COPY . .
 
-RUN bun run --filter engine build
-RUN ls -la apps/engine/dist/ && test -f apps/engine/dist/index.js
+RUN bun run --filter ws build
+RUN ls -la apps/ws/dist/ && test -f apps/ws/dist/index.js
 
 FROM oven/bun:1.1 AS runner
 WORKDIR /app
 ENV NODE_ENV=production
-COPY --from=base /app/apps/engine/dist ./dist
+COPY --from=base /app/apps/ws/dist ./dist
 
+EXPOSE 8080
 CMD ["bun", "run", "dist/index.js"]
