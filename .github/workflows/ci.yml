@@ -1,0 +1,119 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  REDIS_URL: ${{ secrets.REDIS_URL }}
+
+jobs:
+  lint-and-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: "1.1"
+      - name: Install deps
+        run: bun install --frozen-lockfile
+      - name: Typecheck
+        run: bun run check-types
+      - name: Lint
+        run: bun run lint
+
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: timescale/timescaledb:latest-pg16
+        env:
+          POSTGRES_DB: perp
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: "1.1"
+      - name: Install deps
+        run: bun install --frozen-lockfile
+      - name: Generate Prisma Client
+        run: bunx prisma generate
+        working-directory: packages/prisma-db
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/perp
+      - name: Run migrations
+        run: bunx prisma migrate deploy
+        working-directory: packages/prisma-db
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/perp
+      - name: Run tests
+        run: bun run test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/perp
+          REDIS_URL: redis://localhost:6379
+
+  build:
+    needs: [lint-and-typecheck, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: "1.1"
+      - name: Install deps
+        run: bun install --frozen-lockfile
+      - name: Build frontend
+        run: bun run build
+        working-directory: apps/frontend
+      - name: Build backend
+        run: bun run build
+        working-directory: apps/backend
+      - name: Build engine
+        run: bun run build
+        working-directory: apps/engine
+      - name: Build ws
+        run: bun run build
+        working-directory: apps/ws
+      - name: Build db-poller
+        run: bun run build
+        working-directory: apps/db-poller
+      - name: Build binance-ws
+        run: bun run build
+        working-directory: apps/binance-ws
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Render
+        run: |
+          curl -X POST "https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID_API }}/deploys" \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}"
+      - name: Deploy WS to Render
+        run: |
+          curl -X POST "https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID_WS }}/deploys" \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}"
+      - name: Deploy Frontend to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: "--prod"

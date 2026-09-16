@@ -1,0 +1,109 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/perp?sslmode=disable
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: dev-secret
+      ADMIN_JWT_SECRET: dev-admin-secret
+      FRONTEND_URL: http://localhost:5173
+      PORT: 3000
+    volumes:
+      - ./apps/backend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    command: bun --watch src/index.ts
+
+  engine:
+    build:
+      context: ./apps/engine
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/perp?sslmode=disable
+      REDIS_URL: redis://redis:6379
+    volumes:
+      - ./apps/engine:/app
+      - /app/node_modules
+    command: bun --watch src/index.ts
+
+  ws:
+    build:
+      context: ./apps/ws
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: development
+      REDIS_URL: redis://redis:6379
+    volumes:
+      - ./apps/ws:/app
+      - /app/node_modules
+    ports:
+      - "8080:8080"
+    command: bun --watch src/index.ts
+
+  db-poller:
+    build:
+      context: ./apps/db-poller
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/perp?sslmode=disable
+      REDIS_URL: redis://redis:6379
+    volumes:
+      - ./apps/db-poller:/app
+      - /app/node_modules
+    command: bun --watch src/index.ts
+
+  binance-ws:
+    build:
+      context: ./apps/binance-ws
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: development
+      REDIS_URL: redis://redis:6379
+    volumes:
+      - ./apps/binance-ws:/app
+      - /app/node_modules
+    command: bun --watch src/index.ts
+
+  frontend:
+    build:
+      context: ./apps/frontend
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: development
+      VITE_API_URL: http://localhost:3000/api/v1
+      VITE_WS_URL: ws://localhost:8080
+    volumes:
+      - ./apps/frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    command: bun run dev
+
+  postgres:
+    environment:
+      POSTGRES_DB: perp
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  binance-ws:
+    environment:
+      NODE_ENV: development
+      REDIS_URL: redis://redis:6379
+    volumes:
+      - ./apps/binance-ws:/app
+      - /app/node_modules
+    command: bun --watch src/index.ts
