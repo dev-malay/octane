@@ -9,7 +9,7 @@ RUN bun install --frozen-lockfile
 
 COPY . .
 
-RUN bun run --filter db-poller build
+RUN bun run --filter @prisma-db generate && bun run --filter db-poller build
 RUN ls -la apps/db-poller/dist/ && test -f apps/db-poller/dist/index.js
 
 FROM oven/bun:1.1 AS runner

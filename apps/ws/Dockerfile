@@ -8,7 +8,7 @@ RUN bun install --frozen-lockfile
 
 COPY . .
 
-RUN bun run --filter ws build
+RUN bun run --filter @prisma-db generate && bun run --filter ws build
 RUN ls -la apps/ws/dist/ && test -f apps/ws/dist/index.js
 
 FROM oven/bun:1.1 AS runner

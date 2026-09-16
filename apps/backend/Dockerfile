@@ -8,7 +8,7 @@ RUN bun install --frozen-lockfile
 
 COPY . .
 
-RUN bun run --filter backend build
+RUN bun run --filter @prisma-db generate && bun run --filter backend build
 RUN ls -la apps/backend/dist/ && test -f apps/backend/dist/index.js
 
 FROM oven/bun:1.1 AS runner
