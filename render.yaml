@@ -39,14 +39,6 @@ services:
       - key: REDIS_URL
         sync: false
 
-  - type: pserv
-    name: perp-db
-    plan: free
-    region: singapore
-    envVars:
-      - key: DATABASE_URL
-        sync: false
-
   - type: redis
     name: perp-redis
     plan: free
