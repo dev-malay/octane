@@ -12,6 +12,9 @@ COPY . .
 # Build
 RUN bun run build
 
+# Verify build output exists
+RUN ls -la dist/ && test -f dist/index.js
+
 # Production
 FROM oven/bun:1.1 AS runner
 WORKDIR /app
