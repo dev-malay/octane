@@ -39,7 +39,7 @@ app.get("/health", (_req, res) => {
   res.status(200).json({ status: "ok" })
 })
 
-const PORT = Number(process.env.PORT ?? 3000)
+const PORT = Number(process.env.PORT ?? 8000)
 
 app.listen(PORT, "0.0.0.0", ()=>{
     console.log(`backend server started on ${PORT}`)
