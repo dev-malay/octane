@@ -4,9 +4,10 @@ import type {
   UserEventType,
 } from "./types";
 
-export const API_URL =
+const rawApiUrl =
   import.meta.env.VITE_API_URL ??
   (import.meta.env.DEV ? "/api/v1" : "http://localhost:3000/api/v1");
+export const API_URL = rawApiUrl.replace(/\/+$/, "");
 export const WS_URL = import.meta.env.VITE_WS_URL ?? "ws://localhost:8080";
 
 export interface MarketMeta {
