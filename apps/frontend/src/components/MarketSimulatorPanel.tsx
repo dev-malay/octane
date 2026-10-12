@@ -19,7 +19,7 @@ function StatBox({ label, value }: { label: string; value: string }) {
   return (
     <div className="wr-card-inset px-3 py-2">
       <div className="text-[10px] text-[var(--wr-text-dim)]">{label}</div>
-      <div className="font-mono text-[14px] font-semibold text-white">
+      <div className="font-mono text-[14px] font-semibold text-[var(--wr-text)]">
         {value}
       </div>
     </div>
@@ -107,13 +107,13 @@ export function MarketSimulatorPanel({
             <FlaskConical
               className={`h-4 w-4 ${running ? "animate-pulse text-[var(--wr-green)]" : "text-[var(--wr-text-muted)]"}`}
             />
-            <h2 className="text-[15px] font-bold text-white">
+            <h2 className="text-[15px] font-bold text-[var(--wr-text)]">
               Market Simulator
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-[var(--wr-text-muted)] hover:bg-[var(--wr-card-hover)] hover:text-white"
+            className="rounded-lg p-1.5 text-[var(--wr-text-muted)] hover:bg-[var(--wr-card-hover)] hover:text-[var(--wr-text)]"
           >
             <X className="h-4 w-4" />
           </button>
@@ -137,7 +137,7 @@ export function MarketSimulatorPanel({
                 disabled={running}
                 value={config.botCount}
                 onChange={(e) => patch({ botCount: Number(e.target.value) })}
-                className="wr-input w-full px-2 py-1.5 font-mono text-sm text-white"
+                className="wr-input w-full px-2 py-1.5 font-mono text-sm text-[var(--wr-text)]"
               />
             </label>
             <label className="space-y-1 text-[11px]">
@@ -149,7 +149,7 @@ export function MarketSimulatorPanel({
                 disabled={running}
                 value={config.leverage}
                 onChange={(e) => patch({ leverage: Number(e.target.value) })}
-                className="wr-input w-full px-2 py-1.5 font-mono text-sm text-white"
+                className="wr-input w-full px-2 py-1.5 font-mono text-sm text-[var(--wr-text)]"
               />
             </label>
             <label className="space-y-1 text-[11px]">
@@ -167,7 +167,7 @@ export function MarketSimulatorPanel({
                     ],
                   })
                 }
-                className="wr-input w-full px-2 py-1.5 font-mono text-sm text-white"
+                className="wr-input w-full px-2 py-1.5 font-mono text-sm text-[var(--wr-text)]"
               />
             </label>
             <label className="space-y-1 text-[11px]">
@@ -185,7 +185,7 @@ export function MarketSimulatorPanel({
                     ],
                   })
                 }
-                className="wr-input w-full px-2 py-1.5 font-mono text-sm text-white"
+                className="wr-input w-full px-2 py-1.5 font-mono text-sm text-[var(--wr-text)]"
               />
             </label>
             <label className="space-y-1 text-[11px]">
@@ -200,7 +200,7 @@ export function MarketSimulatorPanel({
                 onChange={(e) =>
                   patch({ crossProbability: Number(e.target.value) })
                 }
-                className="wr-input w-full px-2 py-1.5 font-mono text-sm text-white"
+                className="wr-input w-full px-2 py-1.5 font-mono text-sm text-[var(--wr-text)]"
               />
             </label>
             <label className="space-y-1 text-[11px]">
@@ -215,7 +215,7 @@ export function MarketSimulatorPanel({
                 onChange={(e) =>
                   patch({ cancelProbability: Number(e.target.value) })
                 }
-                className="wr-input w-full px-2 py-1.5 font-mono text-sm text-white"
+                className="wr-input w-full px-2 py-1.5 font-mono text-sm text-[var(--wr-text)]"
               />
             </label>
             <label className="space-y-1 text-[11px]">
@@ -228,7 +228,7 @@ export function MarketSimulatorPanel({
                 disabled={running}
                 value={config.spreadPct}
                 onChange={(e) => patch({ spreadPct: Number(e.target.value) })}
-                className="wr-input w-full px-2 py-1.5 font-mono text-sm text-white"
+                className="wr-input w-full px-2 py-1.5 font-mono text-sm text-[var(--wr-text)]"
               />
             </label>
             <label className="space-y-1 text-[11px]">
@@ -245,7 +245,7 @@ export function MarketSimulatorPanel({
                       qtyRange: [Number(e.target.value), config.qtyRange[1]],
                     })
                   }
-                  className="wr-input w-full px-2 py-1.5 font-mono text-sm text-white"
+                  className="wr-input w-full px-2 py-1.5 font-mono text-sm text-[var(--wr-text)]"
                 />
                 <input
                   type="number"
@@ -258,7 +258,7 @@ export function MarketSimulatorPanel({
                       qtyRange: [config.qtyRange[0], Number(e.target.value)],
                     })
                   }
-                  className="wr-input w-full px-2 py-1.5 font-mono text-sm text-white"
+                  className="wr-input w-full px-2 py-1.5 font-mono text-sm text-[var(--wr-text)]"
                 />
               </div>
             </label>

@@ -31,24 +31,26 @@
 :root {
   color-scheme: dark;
 
-  /* WhiteRock palette (trading app) */
-  --wr-bg: #060708;
-  --wr-bg-elevated: #0c0e12;
-  --wr-card-from: #161920;
-  --wr-card-to: #0a0c10;
-  --wr-card-hover: #12151c;
-  --wr-border: #1a1e26;
-  --wr-border-subtle: #141820;
-  --wr-text: #e8ecf1;
-  --wr-text-secondary: #9aa3b2;
-  --wr-text-muted: #6b7585;
-  --wr-text-dim: #4a5360;
-  --wr-green: #10b981;
-  --wr-green-dim: #22c97a;
-  --wr-green-glow: rgba(16, 185, 129, 0.12);
-  --wr-red: #e05260;
-  --wr-red-glow: rgba(224, 82, 96, 0.12);
-  --wr-amber: #f5a623;
+  /* Trading app palette — mirrors the landing (Cursor-style warm neutrals) */
+  --wr-bg: #14120b;
+  --wr-bg-elevated: #1c1a13;
+  --wr-card-from: #1c1a13;
+  --wr-card-to: #1c1a13;
+  --wr-card-hover: #26231a;
+  --wr-border: #353226;
+  --wr-border-strong: #4a4636;
+  --wr-border-subtle: #25221a;
+  --wr-text: #edecec;
+  --wr-text-secondary: #a6a49c;
+  --wr-text-muted: #a6a49c;
+  --wr-text-dim: #6f6d66;
+  --wr-green: #00c896;
+  --wr-green-dim: #34d399;
+  --wr-green-glow: rgba(0, 200, 150, 0.12);
+  --wr-red: #f6465d;
+  --wr-red-glow: rgba(246, 70, 93, 0.12);
+  --wr-amber: #f0b90b;
+  --wr-sunk: #100e09;
 }
 
 html,
@@ -65,10 +67,10 @@ body {
   margin: 0;
   background: var(--color-bg);
   color: var(--wr-text-secondary);
-  font-weight: 200;
-  font-family:
-    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-weight: 400;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
 }
 
 .font-mono {
@@ -76,45 +78,52 @@ body {
     monospace;
 }
 
-/* Card with subtle top-to-bottom gradient */
+/* Card — flat panel like the landing */
 .wr-card {
-  background: linear-gradient(
-    180deg,
-    var(--wr-card-from) 0%,
-    var(--wr-card-to) 100%
-  );
-  border: 1px solid var(--wr-border);
+  background: var(--wr-bg-elevated);
+  border: 1px solid var(--wr-border-subtle);
   border-radius: 12px;
 }
 
 .wr-card-inset {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.03) 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  background: var(--wr-card-hover);
   border: 1px solid var(--wr-border-subtle);
   border-radius: 10px;
 }
 
-/* Primary CTA with gradient */
+/* Primary CTA — flat white like the landing */
 .wr-btn-primary {
-  background: linear-gradient(180deg, #34d399 0%, #10b981 45%, #0b8457 100%);
-  color: #041208;
-  font-weight: 700;
+  background: var(--wr-text);
+  color: var(--wr-bg);
+  font-weight: 600;
   border-radius: 10px;
-  transition: filter 0.15s ease, transform 0.1s ease;
+  transition: opacity 0.15s ease, transform 0.1s ease;
 }
 .wr-btn-primary:hover:not(:disabled) {
-  filter: brightness(1.06);
+  opacity: 0.9;
 }
 .wr-btn-primary:active:not(:disabled) {
   transform: scale(0.99);
 }
 
+/* Long CTA — flat green */
+.wr-btn-long {
+  background: var(--wr-green);
+  color: var(--wr-bg);
+  font-weight: 700;
+  border-radius: 10px;
+  transition: filter 0.15s ease, transform 0.1s ease;
+}
+.wr-btn-long:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+.wr-btn-long:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
 .wr-btn-danger {
-  background: linear-gradient(180deg, #e57a8a 0%, #e05260 45%, #c9404f 100%);
-  color: #1a0508;
+  background: var(--wr-red);
+  color: var(--wr-bg);
   font-weight: 700;
   border-radius: 10px;
   transition: filter 0.15s ease;
@@ -138,7 +147,7 @@ body {
   gap: 0;
   padding: 3px;
   border-radius: 10px;
-  background: rgba(0, 0, 0, 0.45);
+  background: var(--wr-sunk);
   border: 1px solid var(--wr-border-subtle);
 }
 
@@ -150,8 +159,6 @@ body {
   width: calc(50% - 3px);
   border-radius: 8px;
   background: var(--wr-green);
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.08);
   transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
 }
@@ -175,75 +182,44 @@ body {
 }
 
 .wr-segment-btn--active {
-  color: var(--wr-bg-elevated);
+  color: var(--wr-bg);
 }
 
-/* Ticker bar — subtle vertical gradient */
+/* Ticker bar — flat panel like the landing */
 .wr-ticker {
-  background: linear-gradient(
-    180deg,
-    #12151c 0%,
-    #0c0e12 45%,
-    #080a0d 100%
-  );
+  background: var(--wr-bg-elevated);
   border-top: 1px solid var(--wr-border-subtle);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
-/* Market header — gradient bar aligned with trading view */
+/* Market header — flat panel aligned with trading view */
 .wr-market-header {
-  background: linear-gradient(
-    180deg,
-    #141820 0%,
-    #0e1016 50%,
-    #0a0c10 100%
-  );
+  background: var(--wr-bg-elevated);
   border: 1px solid var(--wr-border-subtle);
   border-radius: 12px;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
-/* Form input — inset gradient like WhiteRock */
+/* Form input — flat surface like the landing */
 .wr-input {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.05) 0%,
-    rgba(0, 0, 0, 0.25) 40%,
-    rgba(0, 0, 0, 0.45) 100%
-  );
+  background: var(--wr-bg);
   border: 1px solid var(--wr-border);
   border-radius: 12px;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 1px 2px rgba(0, 0, 0, 0.3);
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .wr-input:focus-within {
-  border-color: rgba(16, 185, 129, 0.35);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 0 0 1px rgba(16, 185, 129, 0.12),
-    0 0 12px rgba(16, 185, 129, 0.06);
+  border-color: rgba(0, 200, 150, 0.4);
+  box-shadow: 0 0 0 1px rgba(0, 200, 150, 0.15);
 }
 
 .wr-input-select {
   background-color: var(--wr-bg-elevated);
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.04) 0%,
-    rgba(0, 0, 0, 0.35) 100%
-  );
   border: 1px solid var(--wr-border);
   border-radius: 12px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  color-scheme: dark;
+  color-scheme: inherit;
 }
 .wr-input-select option {
   background-color: var(--wr-bg-elevated);
-  color: #e8ecf1;
+  color: var(--wr-text);
 }
 .wr-nav-active {
   color: var(--wr-text);
@@ -263,14 +239,14 @@ body {
 /* Nav underline active */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #2a3038 transparent;
+  scrollbar-color: var(--wr-border) transparent;
 }
 *::-webkit-scrollbar {
   width: 5px;
   height: 5px;
 }
 *::-webkit-scrollbar-thumb {
-  background: #2a3038;
+  background: var(--wr-border);
   border-radius: 9999px;
 }
 *::-webkit-scrollbar-track {
@@ -282,7 +258,7 @@ input[type="range"] {
   appearance: none;
   height: 4px;
   border-radius: 9999px;
-  background: #1e2229;
+  background: var(--color-surface-2);
   outline: none;
 }
 input[type="range"]::-webkit-slider-thumb {
@@ -292,8 +268,8 @@ input[type="range"]::-webkit-slider-thumb {
   height: 16px;
   border-radius: 50%;
   background: var(--wr-green);
-  border: 2px solid #0a0c10;
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+  border: 2px solid var(--wr-bg-elevated);
+  box-shadow: 0 0 8px rgba(0, 200, 150, 0.4);
   cursor: pointer;
 }
 input[type="range"]::-moz-range-thumb {
@@ -301,8 +277,8 @@ input[type="range"]::-moz-range-thumb {
   height: 16px;
   border-radius: 50%;
   background: var(--wr-green);
-  border: 2px solid #0a0c10;
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+  border: 2px solid var(--wr-bg-elevated);
+  box-shadow: 0 0 8px rgba(0, 200, 150, 0.4);
   cursor: pointer;
 }
 
@@ -358,6 +334,27 @@ input[type="range"]::-moz-range-thumb {
   --color-text: #26251e;
   --color-text-muted: #6f6d64;
   --color-text-dim: #9a978c;
+
+  /* Trading app follows the landing in light mode too */
+  --wr-bg: #f7f7f4;
+  --wr-bg-elevated: #ffffff;
+  --wr-card-from: #ffffff;
+  --wr-card-to: #ffffff;
+  --wr-card-hover: #eceae3;
+  --wr-border: #d8d4c7;
+  --wr-border-strong: #c8c2ae;
+  --wr-border-subtle: #e5e1d4;
+  --wr-text: #26251e;
+  --wr-text-secondary: #6f6d64;
+  --wr-text-muted: #6f6d64;
+  --wr-text-dim: #9a978c;
+  --wr-green: #00c896;
+  --wr-green-dim: #0a8f6d;
+  --wr-green-glow: rgba(0, 200, 150, 0.14);
+  --wr-red: #f6465d;
+  --wr-red-glow: rgba(246, 70, 93, 0.12);
+  --wr-amber: #f0b90b;
+  --wr-sunk: #e8e5d9;
 }
 
 .oct-landing {

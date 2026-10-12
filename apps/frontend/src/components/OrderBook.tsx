@@ -136,14 +136,14 @@ function BookPanel({
                 row={row}
                 maxTotal={asks.maxTotal}
                 color="var(--wr-red)"
-                barColor="rgba(224, 82, 96, 0.18)"
+                barColor="color-mix(in oklab, var(--wr-red) 18%, transparent)"
                 market={market}
               />
             ))
           )}
         </div>
 
-        <div className="flex shrink-0 items-center justify-between border-y border-[var(--wr-border-subtle)] bg-black/20 px-3 py-1.5">
+        <div className="flex shrink-0 items-center justify-between border-y border-[var(--wr-border-subtle)] bg-[var(--wr-sunk)]/50 px-3 py-1.5">
           <span
             className={`text-[14px] font-bold ${
               (spread ?? 0) >= 0
@@ -173,7 +173,7 @@ function BookPanel({
                 row={row}
                 maxTotal={bids.maxTotal}
                 color="var(--wr-green)"
-                barColor="rgba(16, 185, 129, 0.18)"
+                barColor="color-mix(in oklab, var(--wr-green) 18%, transparent)"
                 market={market}
               />
             ))
@@ -208,7 +208,7 @@ function TradesPanel({
           trades.map((t) => (
             <div
               key={t.fillId}
-              className="grid grid-cols-3 px-3 py-[3px] transition-colors hover:bg-white/[0.02]"
+              className="grid grid-cols-3 px-3 py-[3px] transition-colors hover:bg-[var(--wr-card-hover)]"
             >
               <span
                 className="font-semibold"
@@ -244,7 +244,7 @@ function Level({
   market: ReturnType<typeof getMarket>;
 }) {
   return (
-    <div className="relative grid grid-cols-3 px-3 py-[3px] transition-colors hover:bg-white/[0.02]">
+    <div className="relative grid grid-cols-3 px-3 py-[3px] transition-colors hover:bg-[var(--wr-card-hover)]">
       <div
         className="pointer-events-none absolute inset-y-0 right-0"
         style={{

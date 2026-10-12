@@ -46,7 +46,7 @@ export function DemoUserSwitcher() {
             const accentClass =
               account.accent === "green"
                 ? "border-[var(--wr-green)]/40 bg-[var(--wr-green-glow)] text-[var(--wr-green)]"
-                : "border-amber-400/40 bg-amber-400/10 text-amber-300";
+                : "border-[var(--wr-amber)]/40 bg-[var(--wr-amber)]/10 text-[var(--wr-amber)]";
 
             return (
               <button
@@ -56,25 +56,25 @@ export function DemoUserSwitcher() {
                 className={`flex min-w-[180px] items-center gap-3 rounded-xl border px-3 py-2 text-left transition-all ${
                   active
                     ? accentClass
-                    : "border-[var(--wr-border)] bg-black/20 text-[var(--wr-text-secondary)] hover:border-[var(--wr-border-strong)] hover:bg-[var(--wr-card-hover)]"
+                    : "border-[var(--wr-border)] bg-[var(--wr-sunk)]/60 text-[var(--wr-text-secondary)] hover:border-[var(--wr-border-strong)] hover:bg-[var(--wr-card-hover)]"
                 } ${switching === account.username ? "opacity-60" : ""}`}
               >
                 <div
                   className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
                     account.accent === "green"
                       ? "bg-[var(--wr-green)] text-black"
-                      : "bg-amber-400 text-black"
+                      : "bg-[var(--wr-amber)] text-black"
                   }`}
                 >
                   {account.displayName[0]}
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-[13px] font-semibold text-white">
+                    <span className="text-[13px] font-semibold text-[var(--wr-text)]">
                       {account.displayName}
                     </span>
                     {active && (
-                      <span className="rounded-md bg-black/30 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">
+                      <span className="rounded-md bg-[var(--wr-sunk)]/60 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">
                         Active
                       </span>
                     )}
@@ -110,12 +110,12 @@ export function DemoUserSwitcher() {
                 key={snapshot.userId}
                 className={`rounded-xl border px-3 py-2 text-[11px] ${
                   isActive
-                    ? "border-[var(--wr-border)] bg-black/25"
-                    : "border-[var(--wr-border-subtle)] bg-black/10"
+                    ? "border-[var(--wr-border)] bg-[var(--wr-sunk)]/50"
+                    : "border-[var(--wr-border-subtle)] bg-[var(--wr-sunk)]/40"
                 }`}
               >
                 <div className="mb-1 flex items-center justify-between">
-                  <span className="font-semibold text-white">
+                  <span className="font-semibold text-[var(--wr-text)]">
                     {account.displayName}
                     {!isActive && (
                       <span className="ml-2 font-normal text-[var(--wr-text-dim)]">

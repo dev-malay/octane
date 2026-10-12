@@ -125,14 +125,14 @@ function Balances({
       </thead>
       <tbody className="font-mono">
         <tr className="border-t border-[var(--wr-border-subtle)]">
-          <td className="px-4 py-2.5 font-sans font-bold text-white">USD</td>
+          <td className="px-4 py-2.5 font-sans font-bold text-[var(--wr-text)]">USD</td>
           <td className="px-4 py-2.5 text-right text-[var(--wr-text-secondary)]">
             {formatUsd(balance.available)}
           </td>
           <td className="px-4 py-2.5 text-right text-[var(--wr-amber)]">
             {formatUsd(balance.locked)}
           </td>
-          <td className="px-4 py-2.5 text-right font-bold text-white">
+          <td className="px-4 py-2.5 text-right font-bold text-[var(--wr-text)]">
             {formatUsd(balance.available + balance.locked)}
           </td>
         </tr>
@@ -170,7 +170,7 @@ function Positions({
             className="wr-card-inset grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 p-3"
           >
             <div className="flex items-center gap-2">
-              <span className="font-bold text-white">{market.label}</span>
+              <span className="font-bold text-[var(--wr-text)]">{market.label}</span>
               <span
                 className={`rounded-md px-1.5 py-0.5 text-[10px] font-bold ${
                   p.type === "LONG"
@@ -219,7 +219,7 @@ function Positions({
 
             {/* PNL bar */}
             <div className="col-span-2">
-              <div className="h-1.5 overflow-hidden rounded-full bg-black/40">
+              <div className="h-1.5 overflow-hidden rounded-full bg-[var(--wr-sunk)]">
                 <div
                   className={`h-full rounded-full transition-all ${
                     isProfit ? "bg-[var(--wr-green)]" : "bg-[var(--wr-red)]"
@@ -260,9 +260,9 @@ function Positions({
             return (
               <tr
                 key={`table-${p.marketSymbol}`}
-                className="border-t border-[var(--wr-border-subtle)] hover:bg-white/[0.02]"
+                className="border-t border-[var(--wr-border-subtle)] hover:bg-[var(--wr-card-hover)]"
               >
-                <td className="px-4 py-2 font-sans font-bold text-white">
+                <td className="px-4 py-2 font-sans font-bold text-[var(--wr-text)]">
                   {market.label}
                 </td>
                 <td className="px-4 py-2">
@@ -332,9 +332,9 @@ function OpenOrders() {
           return (
             <tr
               key={o.orderId}
-              className="border-t border-[var(--wr-border-subtle)] hover:bg-white/[0.02]"
+              className="border-t border-[var(--wr-border-subtle)] hover:bg-[var(--wr-card-hover)]"
             >
-              <td className="px-4 py-2 font-sans font-bold text-white">
+              <td className="px-4 py-2 font-sans font-bold text-[var(--wr-text)]">
                 {market.label}
               </td>
               <td
@@ -398,9 +398,9 @@ function Fills({ fills }: { fills: ReturnType<typeof useTrading>["fills"] }) {
           return (
             <tr
               key={`${f.fillId}-${i}`}
-              className="border-t border-[var(--wr-border-subtle)] hover:bg-white/[0.02]"
+              className="border-t border-[var(--wr-border-subtle)] hover:bg-[var(--wr-card-hover)]"
             >
-              <td className="px-4 py-2 font-sans font-bold text-white">
+              <td className="px-4 py-2 font-sans font-bold text-[var(--wr-text)]">
                 {market.label}
               </td>
               <td

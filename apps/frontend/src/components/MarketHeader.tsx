@@ -70,9 +70,9 @@ export function MarketHeader() {
       <div className="relative flex shrink-0 items-center gap-3 border-r border-[var(--wr-border-subtle)] pr-4">
         <button
           onClick={() => setMenuOpen((o) => !o)}
-          className="flex items-center gap-1.5 rounded-lg px-1 py-0.5 transition-colors hover:bg-white/[0.04]"
+          className="flex items-center gap-1.5 rounded-lg px-1 py-0.5 transition-colors hover:bg-[var(--wr-card-hover)]"
         >
-          <span className="text-[15px] font-bold text-white">{market.label}</span>
+          <span className="text-[15px] font-bold text-[var(--wr-text)]">{market.label}</span>
           <ChevronDown className="h-3.5 w-3.5 text-[var(--wr-text-muted)]" />
         </button>
 
@@ -99,7 +99,7 @@ export function MarketHeader() {
                   }}
                   className={`flex w-full items-center justify-between px-3 py-2.5 text-sm transition-colors hover:bg-[var(--wr-card-hover)] ${
                     m.symbol === currentSymbol
-                      ? "text-white"
+                      ? "text-[var(--wr-text)]"
                       : "text-[var(--wr-text-muted)]"
                   }`}
                 >

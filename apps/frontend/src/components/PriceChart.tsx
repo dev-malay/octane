@@ -53,6 +53,55 @@ function formatCandleTime(ms: number, timeframe: ChartTimeframe): string {
   return formatTime(ms);
 }
 
+function themeVar(name: string, fallback: string): string {
+  if (typeof window === "undefined") return fallback;
+  const v = getComputedStyle(document.documentElement)
+    .getPropertyValue(name)
+    .trim();
+  return v || fallback;
+}
+
+function withAlpha(hex: string, alpha: number): string {
+  const m = /^#([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!m) return hex;
+  const n = parseInt(m[1], 16);
+  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`;
+}
+
+interface ChartTheme {
+  text: string;
+  dim: string;
+  muted: string;
+  borderSubtle: string;
+  green: string;
+  greenBright: string;
+  red: string;
+  redBright: string;
+  crosshair: string;
+  badge: string;
+  badgeText: string;
+}
+
+// Reads the live landing/trade tokens so the canvas follows dark + light.
+function readChartTheme(): ChartTheme {
+  const green = themeVar("--wr-green", "#00c896");
+  const red = themeVar("--wr-red", "#f6465d");
+  const muted = themeVar("--wr-text-muted", "#a6a49c");
+  return {
+    text: themeVar("--wr-text", "#edecec"),
+    dim: themeVar("--wr-text-dim", "#6f6d66"),
+    muted,
+    borderSubtle: themeVar("--wr-border-subtle", "#25221a"),
+    green,
+    greenBright: themeVar("--wr-green-dim", "#34d399"),
+    red,
+    redBright: "#ff7585",
+    crosshair: withAlpha(muted, 0.45),
+    badge: withAlpha(green, 0.95),
+    badgeText: "#14120b",
+  };
+}
+
 export function PriceChart() {
   const {
     candles,
@@ -107,9 +156,10 @@ export function PriceChart() {
     if (!ctx) return;
     ctx.scale(dpr, dpr);
     ctx.clearRect(0, 0, width, height);
+    const th = readChartTheme();
 
     if (!candlesReady) {
-      ctx.fillStyle = "#4a5360";
+      ctx.fillStyle = th.dim;
       ctx.font = "12px JetBrains Mono, monospace";
       ctx.textAlign = "center";
       ctx.fillText("Loading candles…", width / 2, height / 2);
@@ -117,7 +167,7 @@ export function PriceChart() {
     }
 
     if (candles.length === 0) {
-      ctx.fillStyle = "#4a5360";
+      ctx.fillStyle = th.dim;
       ctx.font = "12px JetBrains Mono, monospace";
       ctx.textAlign = "center";
       ctx.fillText("Waiting for trades…", width / 2, height / 2);
@@ -154,8 +204,8 @@ export function PriceChart() {
 
     ctx.font = "10px JetBrains Mono, monospace";
     ctx.textAlign = "left";
-    ctx.strokeStyle = "#141820";
-    ctx.fillStyle = "#6b7585";
+    ctx.strokeStyle = th.borderSubtle;
+    ctx.fillStyle = th.muted;
     const rows = 5;
     for (let i = 0; i <= rows; i++) {
       const y = (plotH / rows) * i;
@@ -177,9 +227,9 @@ export function PriceChart() {
       const x = xOf(i);
       const up = c.c >= c.o;
       const isHovered = i === hoverIndex;
-      const color = up ? "#10b981" : "#e05260";
-      ctx.strokeStyle = isHovered ? "#e8ecf1" : color;
-      ctx.fillStyle = isHovered ? (up ? "#34d399" : "#e58a96") : color;
+      const color = up ? th.green : th.red;
+      ctx.strokeStyle = isHovered ? th.text : color;
+      ctx.fillStyle = isHovered ? (up ? th.greenBright : th.redBright) : color;
 
       ctx.beginPath();
       ctx.moveTo(x, yOf(c.h));
@@ -200,7 +250,7 @@ export function PriceChart() {
       const hx = xOf(hover.index);
       const candle = candles[hover.index];
 
-      ctx.strokeStyle = "rgba(154, 163, 178, 0.45)";
+      ctx.strokeStyle = th.crosshair;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
       ctx.moveTo(hx, 0);
@@ -214,9 +264,9 @@ export function PriceChart() {
       ctx.stroke();
       ctx.setLineDash([]);
 
-      ctx.fillStyle = "rgba(16, 185, 129, 0.95)";
+      ctx.fillStyle = th.badge;
       ctx.fillRect(plotW, hy - 8, PAD_RIGHT, 16);
-      ctx.fillStyle = "#041208";
+      ctx.fillStyle = th.badgeText;
       ctx.font = "10px JetBrains Mono, monospace";
       ctx.fillText(
         candle.c.toFixed(pricePrecision),
@@ -226,16 +276,16 @@ export function PriceChart() {
     } else {
       const last = candles[candles.length - 1];
       const lastY = yOf(last.c);
-      ctx.strokeStyle = "#10b981";
+      ctx.strokeStyle = th.green;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(0, lastY);
       ctx.lineTo(plotW, lastY);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = "#10b981";
+      ctx.fillStyle = th.green;
       ctx.fillRect(plotW, lastY - 8, PAD_RIGHT, 16);
-      ctx.fillStyle = "#041208";
+      ctx.fillStyle = th.badgeText;
       ctx.font = "10px JetBrains Mono, monospace";
       ctx.fillText(last.c.toFixed(pricePrecision), plotW + 5, lastY + 3);
     }
@@ -542,7 +592,7 @@ export function PriceChart() {
             <canvas ref={canvasRef} className="absolute inset-0" />
             {tooltipCandle && hoverTooltip ? (
               <div
-                className="pointer-events-none absolute z-10 rounded-lg border border-[var(--wr-border)] bg-[#0f1218ee] px-2.5 py-2 font-mono text-[10px] shadow-lg backdrop-blur-sm"
+                className="pointer-events-none absolute z-10 rounded-lg border border-[var(--wr-border)] bg-[var(--wr-sunk)]/90 px-2.5 py-2 font-mono text-[10px] shadow-lg backdrop-blur-sm"
                 style={{
                   left: Math.min(
                     hoverTooltip.clientX -
@@ -587,7 +637,7 @@ export function PriceChart() {
                 </div>
               </div>
             ) : null}
-            <div className="pointer-events-none absolute bottom-2 left-2 rounded-md bg-[#0c0e12aa] px-2 py-1 text-[10px] text-[var(--wr-text-dim)]">
+            <div className="pointer-events-none absolute bottom-2 left-2 rounded-md bg-[var(--wr-sunk)]/70 px-2 py-1 text-[10px] text-[var(--wr-text-dim)]">
               Scroll to zoom · drag to pan · double-click to reset
             </div>
           </>

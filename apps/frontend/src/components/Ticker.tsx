@@ -45,7 +45,7 @@ export function Ticker() {
             <span className="font-semibold text-[var(--wr-text-secondary)]">
               {item.label}
             </span>
-            <span className="text-white">
+            <span className="text-[var(--wr-text)]">
               {formatPrice(item.mark, item.pricePrecision)}
             </span>
             <span

@@ -19,21 +19,21 @@ export function TopNav({ onOpenAuth, onOpenSimulator }: TopNavProps) {
   return (
     <header className="flex h-12 shrink-0 items-center justify-between border-b border-[var(--wr-border)] bg-[var(--wr-bg)] px-5">
       <div className="flex items-center gap-8">
-        <span className="text-[16px] font-semibold  tracking-tight text-white">
+        <span className="text-[16px] font-semibold  tracking-tight text-[var(--wr-text)]">
           Octane
         </span>
         <nav className="hidden items-center gap-6 text-[13px] font-medium md:flex">
           {NAV_ITEMS.map((item) => (
             <button
               key={item}
-              className={`transition-colors hover:text-white ${
-                item === "Trade" ? "wr-nav-active text-white" : "text-[var(--wr-text-muted)]"
+              className={`transition-colors hover:text-[var(--wr-text)] ${
+                item === "Trade" ? "wr-nav-active text-[var(--wr-text)]" : "text-[var(--wr-text-muted)]"
               }`}
             >
               {item}
             </button>
           ))}
-          <button className="flex items-center gap-1 text-[var(--wr-text-muted)] transition-colors hover:text-white">
+          <button className="flex items-center gap-1 text-[var(--wr-text-muted)] transition-colors hover:text-[var(--wr-text)]">
             More <ChevronDown className="h-3.5 w-3.5" />
           </button>
         </nav>
@@ -64,7 +64,7 @@ export function TopNav({ onOpenAuth, onOpenSimulator }: TopNavProps) {
                   connected ? "bg-[var(--wr-green)] shadow-[0_0_6px_var(--wr-green)]" : "bg-[var(--wr-red)]"
                 }`}
               />
-              <div className="flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500">
+              <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--wr-amber)]">
                 <Wallet className="h-3 w-3 text-black" />
               </div>
               {isDemoSession && (
@@ -72,7 +72,7 @@ export function TopNav({ onOpenAuth, onOpenSimulator }: TopNavProps) {
                   Demo
                 </span>
               )}
-              <span className="font-mono text-xs font-semibold text-white">
+              <span className="font-mono text-xs font-semibold text-[var(--wr-text)]">
                 {user?.username}
               </span>
             </div>
@@ -87,7 +87,7 @@ export function TopNav({ onOpenAuth, onOpenSimulator }: TopNavProps) {
           <>
             <button
               onClick={() => onOpenAuth("signin")}
-              className="rounded-xl px-3 py-1.5 text-[13px] font-semibold text-[var(--wr-text-muted)] transition-colors hover:text-white"
+              className="rounded-xl px-3 py-1.5 text-[13px] font-semibold text-[var(--wr-text-muted)] transition-colors hover:text-[var(--wr-text)]"
             >
               Sign in
             </button>

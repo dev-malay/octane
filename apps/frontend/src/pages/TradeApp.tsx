@@ -54,7 +54,7 @@ export function TradeApp({ onOpenAuth }: TradeAppProps) {
   );
 
   useEffect(() => {
-    document.title = "Trade — Octane";
+    document.title = "Trade | Octane";
   }, []);
 
   return (

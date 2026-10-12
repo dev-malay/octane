@@ -103,7 +103,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
       <div className="wr-card relative w-full max-w-md overflow-hidden text-[var(--wr-text-secondary)] shadow-2xl">
         <div className="flex items-center justify-between border-b border-[var(--wr-border)] px-6 py-4">
-          <h2 className="text-xl font-bold tracking-tight text-white">
+          <h2 className="text-xl font-bold tracking-tight text-[var(--wr-text)]">
             {showDemoPicker
               ? "Choose Demo User"
               : mode === "signin"
@@ -112,7 +112,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </h2>
           <button
             onClick={resetAndClose}
-            className="rounded-lg p-1 text-[var(--wr-text-muted)] transition-colors hover:bg-[var(--wr-card-hover)] hover:text-white"
+            className="rounded-lg p-1 text-[var(--wr-text-muted)] transition-colors hover:bg-[var(--wr-card-hover)] hover:text-[var(--wr-text)]"
           >
             <X className="h-5 w-5" />
           </button>
@@ -143,13 +143,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     key={account.username}
                     onClick={() => void handlePickDemoUser(account.username)}
                     disabled={loading}
-                    className="flex w-full items-center gap-3 rounded-xl border border-[var(--wr-border)] bg-black/30 px-4 py-3 text-left transition-colors hover:bg-[var(--wr-card-hover)] disabled:opacity-50"
+                    className="flex w-full items-center gap-3 rounded-xl border border-[var(--wr-border)] bg-[var(--wr-sunk)]/60 px-4 py-3 text-left transition-colors hover:bg-[var(--wr-card-hover)] disabled:opacity-50"
                   >
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[var(--wr-border)] bg-[var(--wr-bg-elevated)] text-sm font-semibold text-[var(--wr-text)]">
                       {account.displayName[0]}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="text-sm font-semibold text-white">
+                      <div className="text-sm font-semibold text-[var(--wr-text)]">
                         {account.displayName}
                       </div>
                       <div className="text-[12px] text-[var(--wr-text-muted)]">
@@ -164,7 +164,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <button
                 onClick={() => setShowDemoPicker(false)}
                 disabled={loading}
-                className="flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--wr-border)] py-2.5 text-sm text-[var(--wr-text-muted)] transition-colors hover:bg-[var(--wr-card-hover)] hover:text-white"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--wr-border)] py-2.5 text-sm text-[var(--wr-text-muted)] transition-colors hover:bg-[var(--wr-card-hover)] hover:text-[var(--wr-text)]"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Back to sign in
@@ -186,7 +186,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                       placeholder="e.g. trader1"
-                      className="wr-input w-full py-2.5 pl-10 pr-4 text-sm text-white placeholder:text-[var(--wr-text-dim)] focus:border-[var(--wr-green)] focus:outline-none"
+                      className="wr-input w-full py-2.5 pl-10 pr-4 text-sm text-[var(--wr-text)] placeholder:text-[var(--wr-text-dim)] focus:border-[var(--wr-green)] focus:outline-none"
                     />
                   </div>
                 </div>
@@ -204,7 +204,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="wr-input w-full py-2.5 pl-10 pr-4 text-sm text-white placeholder:text-[var(--wr-text-dim)] focus:border-[var(--wr-green)] focus:outline-none"
+                      className="wr-input w-full py-2.5 pl-10 pr-4 text-sm text-[var(--wr-text)] placeholder:text-[var(--wr-text-dim)] focus:border-[var(--wr-green)] focus:outline-none"
                     />
                   </div>
                 </div>
@@ -255,7 +255,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <button
                 onClick={() => void handleOpenDemoPicker()}
                 disabled={loading}
-                className="flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--wr-green)]/20 bg-black/30 py-3 text-sm font-semibold text-[var(--wr-green)] transition-colors hover:bg-[var(--wr-card-hover)]"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--wr-green)]/20 bg-[var(--wr-sunk)]/60 py-3 text-sm font-semibold text-[var(--wr-green)] transition-colors hover:bg-[var(--wr-card-hover)]"
               >
                 One-Click Demo Account
               </button>

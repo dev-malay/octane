@@ -216,7 +216,7 @@ export function OrderForm({ onOpenAuth }: OrderFormProps) {
             value={orderType === "MARKET" ? "Market" : price}
             onChange={(e) => setPrice(e.target.value)}
             placeholder="0.00"
-            className="w-full bg-transparent font-mono text-sm text-white outline-none placeholder:text-[var(--wr-text-dim)] disabled:text-[var(--wr-text-muted)]"
+            className="w-full bg-transparent font-mono text-sm text-[var(--wr-text)] outline-none placeholder:text-[var(--wr-text-dim)] disabled:text-[var(--wr-text-muted)]"
           />
         </Field>
 
@@ -226,7 +226,7 @@ export function OrderForm({ onOpenAuth }: OrderFormProps) {
             value={qty}
             onChange={(e) => onQtyChange(e.target.value)}
             placeholder="0.00"
-            className="w-full bg-transparent font-mono text-sm text-white outline-none placeholder:text-[var(--wr-text-dim)]"
+            className="w-full bg-transparent font-mono text-sm text-[var(--wr-text)] outline-none placeholder:text-[var(--wr-text-dim)]"
           />
         </Field>
 
@@ -296,7 +296,7 @@ export function OrderForm({ onOpenAuth }: OrderFormProps) {
             onClick={submit}
             disabled={submitting || !connected}
             className={`w-full py-3 text-sm disabled:opacity-50 ${
-              side === "BUY" ? "wr-btn-primary" : "wr-btn-danger"
+              side === "BUY" ? "wr-btn-long" : "wr-btn-danger"
             }`}
           >
             {submitting
@@ -315,7 +315,7 @@ export function OrderForm({ onOpenAuth }: OrderFormProps) {
             </button>
             <button
               onClick={() => onOpenAuth("signin")}
-              className="w-full rounded-xl border border-[var(--wr-border)] bg-black/30 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--wr-card-hover)]"
+              className="w-full rounded-xl border border-[var(--wr-border)] bg-[var(--wr-sunk)]/60 py-3 text-sm font-semibold text-[var(--wr-text)] transition-colors hover:bg-[var(--wr-card-hover)]"
             >
               Log in to trade
             </button>
@@ -332,7 +332,7 @@ export function OrderForm({ onOpenAuth }: OrderFormProps) {
                 <button
                   key={amt}
                   onClick={() => void addBalance(amt)}
-                  className="rounded-lg bg-black/40 py-1.5 font-mono text-[11px] font-bold text-white transition-colors hover:bg-[var(--wr-card-hover)]"
+                  className="rounded-lg bg-[var(--wr-sunk)]/60 py-1.5 font-mono text-[11px] font-bold text-[var(--wr-text)] transition-colors hover:bg-[var(--wr-card-hover)]"
                 >
                   +${amt >= 1000 ? `${amt / 1000}K` : amt}
                 </button>
@@ -361,7 +361,7 @@ function Field({
       </span>
       <div className="wr-input flex items-center gap-2 px-3.5 py-3">
         <div className="min-w-0 flex-1">{children}</div>
-        <span className="shrink-0 rounded-md bg-black/25 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[var(--wr-text-dim)]">
+        <span className="shrink-0 rounded-md bg-[var(--wr-sunk)]/50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[var(--wr-text-dim)]">
           {suffix}
         </span>
       </div>

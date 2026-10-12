@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <defs>
+    <radialGradient id="octane-sphere-fav" cx="35%" cy="30%" r="80%" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#a7f3d0"/>
+      <stop offset="38%" stop-color="#34d399"/>
+      <stop offset="75%" stop-color="#065f46"/>
+      <stop offset="100%" stop-color="#022c22"/>
+    </radialGradient>
+  </defs>
+  <circle cx="12" cy="12" r="10" fill="url(#octane-sphere-fav)"/>
+  <ellipse cx="9" cy="8" rx="4" ry="2.6" fill="#ffffff" fill-opacity="0.35" transform="rotate(-25 9 8)"/>
+</svg>
