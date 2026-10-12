@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App.tsx";
 import { LoadTestPanel } from "./components/LoadTestPanel.tsx";
@@ -12,14 +13,16 @@ const isLoadTest =
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ServerGate>
-      {isLoadTest ? (
-        <TradingProvider>
-          <LoadTestPanel />
-        </TradingProvider>
-      ) : (
-        <App />
-      )}
-    </ServerGate>
+    <BrowserRouter>
+      <ServerGate>
+        {isLoadTest ? (
+          <TradingProvider>
+            <LoadTestPanel />
+          </TradingProvider>
+        ) : (
+          <App />
+        )}
+      </ServerGate>
+    </BrowserRouter>
   </StrictMode>,
 );
